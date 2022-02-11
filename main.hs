@@ -3,25 +3,14 @@ module Main where
 import Data.List
 import Control.Monad
 
-castToInt :: [String] -> [Int]
-castToInt = map read
-
-normalizeInput :: [String] -> [[Int]]
-normalizeInput = map (castToInt . words)
-
-chunksOf :: Int -> [a] -> [[a]]
-chunksOf n [] = []
-chunksOf n xs = (take n xs):(chunksOf n (drop n xs))
-
-f :: [Int] -> Bool
-f xs
+isCollinear :: [Int] -> Bool
+isCollinear xs
     | length xs /= 6 = False
     | isCollinearX xs = True
     | isCollinearY xs = True
     | hasAtLeastTwoIdenticalPoints (chunksOf 2 xs) = True
     | isCrossCollinear xs = True
     | otherwise = False
-
 
 isCrossCollinear :: [Int] -> Bool
 isCrossCollinear xs
@@ -43,6 +32,17 @@ hasAtLeastTwoIdenticalPoints xs
     | xs !! 0 == xs !! 2 = True
     | otherwise = False
 
+
+normalizeInput :: [String] -> [[Int]]
+normalizeInput = map (castStringToInt . words)
+
+castStringToInt :: [String] -> [Int]
+castStringToInt = map read
+
+chunksOf :: Int -> [a] -> [[a]]
+chunksOf n [] = []
+chunksOf n xs = (take n xs):(chunksOf n (drop n xs))
+
 normalizeOutput :: Bool -> String
 normalizeOutput a
     | a = "TAK"
@@ -58,12 +58,12 @@ readLines = do
         return line
     return lines
 
-x :: [Int] -> String
-x = normalizeOutput . f
+isCollinearOutput :: [Int] -> String
+isCollinearOutput = normalizeOutput . isCollinear
 
 main :: IO ()
 main =
   do
     lines <- readLines
-    putStrLn (intercalate "\n" (map x (normalizeInput lines)))
+    putStrLn (intercalate "\n" (map isCollinearOutput (normalizeInput lines)))
 
