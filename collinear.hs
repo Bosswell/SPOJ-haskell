@@ -1,3 +1,4 @@
+-- https://pl.spoj.com/problems/JWSPLIN/
 module Main where
 
 import Data.List
@@ -16,7 +17,7 @@ isCrossCollinear :: [Int] -> Bool
 isCrossCollinear xs
     | xs !! 0 == xs !! 2 = False
     | xs !! 0 == xs !! 4 = False
-    | fromIntegral (xs !! 1 - xs !! 3) / fromIntegral (xs !! 0 - xs !! 2) == fromIntegral (xs !! 1 - xs !! 5) / fromIntegral (xs !! 0 - xs !! 4) = True
+    | (fromIntegral (xs !! 1 - xs !! 3) / fromIntegral (xs !! 0 - xs !! 2)) == fromIntegral (xs !! 1 - xs !! 5) / fromIntegral (xs !! 0 - xs !! 4) = True
     | otherwise = False
 
 isCollinearX :: [Int] -> Bool
