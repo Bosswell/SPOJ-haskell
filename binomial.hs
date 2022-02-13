@@ -7,7 +7,7 @@ import Control.Monad
 makeNumerator :: Int -> Int -> [Int]
 makeNumerator a b
         | a == b = [1]
-        | a - b >= 2 * b = [a, a - 1 .. a - b + 1]
+        | a - b >= b = [a, a - 1 .. a - b + 1]
         | a - b < b = [b + 1 .. a]
 
 makeDenominator :: Int -> Int -> [Int]
@@ -15,10 +15,6 @@ makeDenominator a b
         | a == b = [1]
         | a - b >= b = [2 .. b]
         | a - b < b = [2 .. a - b]
-
-multiplyList :: [Int] -> Int
-multiplyList [] = 1
-multiplyList (x:xs) = x * multiplyList xs
 
 normalizeInput :: [String] -> [(Int, Int)]
 normalizeInput = map (castStringListToIntTuple . words)
@@ -43,7 +39,7 @@ makeDenominatorUsingPrimes :: Int -> Int -> [Int]
 makeDenominatorUsingPrimes a = toPrimeFactors . makeDenominator a
 
 getBinomial :: (Int, Int) -> Int
-getBinomial (a, b) = multiplyList $ (makeNumeratorUsingPrimes a b) \\ (makeDenominatorUsingPrimes a b)
+getBinomial (a, b) = product $ (makeNumeratorUsingPrimes a b) \\ (makeDenominatorUsingPrimes a b)
 
 primeFactors n =
   case factors of
